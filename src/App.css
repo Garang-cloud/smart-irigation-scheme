@@ -1,0 +1,254 @@
+/* --- Global Styles & Variables --- */
+:root {
+  /* Professional Blue Palette */
+  --blue-dark: #2C3E50; /* Header, strong elements */
+  --blue-medium: #34495E; /* Card headers, darker backgrounds */
+  --blue-light: #ECF0F1; /* Light background */
+  --blue-accent: #3498DB; /* Primary interactive elements, highlights */
+
+  /* Irrigation Green */
+  --green-irrigation: #2ECC71; /* Success states, ON buttons */
+  --green-irrigation-dark: #27AE60; /* Darker green for hover */
+
+  /* General Colors */
+  --text-dark: #333333;
+  --text-light: #7F8C8D;
+  --white: #FFFFFF;
+  --border-light: #D5DBDB;
+  --shadow-subtle: rgba(0, 0, 0, 0.1);
+  --shadow-medium: rgba(0, 0, 0, 0.15);
+
+  --border-radius: 10px;
+  --spacing-sm: 10px;
+  --spacing-md: 20px;
+  --spacing-lg: 30px;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', 'Roboto', 'Open Sans', 'Lato', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--blue-light);
+  color: var(--text-dark);
+  line-height: 1.6;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  align-items: center;
+  width: 100%;
+}
+
+/* --- Header Styling --- */
+.App-header {
+  background-color: var(--blue-dark);
+  color: var(--white);
+  padding: var(--spacing-md) var(--spacing-lg);
+  width: 100%;
+  box-shadow: 0 4px 15px var(--shadow-medium);
+  text-align: center;
+  font-size: 2rem; /* Larger header title */
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  border-bottom-left-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
+}
+
+/* --- Main Content Layout (CSS Grid for two rows) --- */
+main {
+  display: grid;
+  /* Define two rows: top for status/control, bottom for chart */
+  grid-template-rows: auto 1fr; /* Top row fits content, bottom row takes remaining space */
+  gap: var(--spacing-md); /* Gap between the two main rows */
+  padding: var(--spacing-lg);
+  width: 100%;
+  max-width: 1300px; /* Max width for content */
+  flex-grow: 1; /* Allows main content to expand */
+  margin-top: var(--spacing-md); /* Margin below the header */
+}
+
+/* Container for the top row (Status + Pump Control) */
+.top-row-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive columns for cards */
+  gap: var(--spacing-md); /* Gap between status and pump control cards */
+  margin-bottom: var(--spacing-sm); /* Small margin before the chart */
+}
+
+/* --- Card Styling --- */
+.card {
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 10px var(--shadow-subtle);
+  padding: var(--spacing-md);
+  border: 1px solid var(--border-light);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Smooth hover effect */
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px var(--shadow-medium);
+}
+
+.card h2 {
+  color: var(--blue-medium);
+  font-size: 1.5rem;
+  margin-top: 0;
+  margin-bottom: var(--spacing-md);
+  border-bottom: 2px solid var(--border-light);
+  padding-bottom: var(--spacing-sm);
+  font-weight: 600;
+  /* Removed icon alignment flex properties as icons are not used */
+}
+
+/* --- Current Status Specifics --- */
+.current-status p {
+  margin-bottom: var(--spacing-sm);
+  font-size: 1.15rem;
+  color: var(--text-dark);
+  /* Removed icon alignment flex properties as icons are not used */
+}
+
+.current-status p strong {
+  color: var(--blue-accent); /* Highlight key values with accent blue */
+  font-weight: 700;
+  font-size: 1.3rem;
+}
+
+/* --- Pump Control Specifics --- */
+.control-panel {
+  display: flex;
+  flex-direction: column; /* Stack buttons vertically by default */
+  gap: var(--spacing-sm);
+  justify-content: center; /* Center buttons vertically within the card */
+  align-items: center; /* Center buttons horizontally */
+}
+
+.control-panel button {
+  width: 100%; /* Full width for buttons on small screens */
+  max-width: 250px; /* Max width for buttons */
+  color: var(--white);
+  border: none;
+  padding: 15px 25px; /* More padding for a better click target */
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 5px var(--shadow-subtle);
+}
+
+.control-panel button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px var(--shadow-subtle);
+}
+
+.control-panel button:active:not(:disabled) { /* Added active state */
+  transform: translateY(1px);
+  box-shadow: 0 1px 3px var(--shadow-subtle);
+}
+
+.control-panel button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  box-shadow: none;
+  opacity: 0.7;
+}
+
+/* Specific styling for Pump ON/OFF states */
+.control-panel button:nth-child(1) { /* Turn Pump ON */
+  background-color: var(--green-irrigation);
+}
+.control-panel button:nth-child(1):hover:not(:disabled) {
+  background-color: var(--green-irrigation-dark);
+}
+.control-panel button:nth-child(1):disabled {
+  background-color: #A5D6A7; /* Lighter green when disabled */
+}
+
+.control-panel button:nth-child(2) { /* Turn Pump OFF */
+  background-color: var(--blue-accent);
+}
+.control-panel button:nth-child(2):hover:not(:disabled) {
+  background-color: color-mix(in srgb, var(--blue-accent) 80%, black 20%);
+}
+.control-panel button:nth-child(2):disabled {
+  background-color: #B0BEC5; /* Lighter blue when disabled */
+}
+
+
+/* --- History Chart Specifics --- */
+.history-chart {
+  /* This card will span the full width of the second row in the main grid */
+  min-height: 400px; /* Ensure chart has enough height */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: var(--spacing-md); /* Consistent padding */
+}
+
+.history-chart > div { /* Target the chart container inside history-chart */
+  width: 100%;
+  height: 100%; /* Take available height within min-height */
+  margin-top: var(--spacing-md); /* Margin between title and chart */
+}
+
+/* --- Custom Alert Modal --- */
+/* Removed modal styles as CustomAlertModal component is removed */
+
+
+/* --- Responsive Adjustments (Media Queries) --- */
+
+/* For tablets and larger screens, arrange buttons side-by-side */
+@media (min-width: 576px) {
+  .control-panel {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  .control-panel button {
+    width: auto; /* Buttons can size to content */
+    min-width: 180px; /* Ensure a minimum width */
+  }
+}
+
+/* For larger desktops, adjust main padding and card widths */
+@media (min-width: 1024px) {
+  main {
+    padding: var(--spacing-lg) 5%; /* More horizontal padding */
+  }
+  .top-row-container {
+    grid-template-columns: repeat(2, 1fr); /* Exactly two columns for status and control */
+  }
+}
+
+/* General mobile adjustments */
+@media (max-width: 767px) {
+  .App-header {
+    font-size: 1.5rem;
+    padding: var(--spacing-md);
+  }
+  main {
+    padding: var(--spacing-md);
+    gap: var(--spacing-md);
+  }
+  .card {
+    padding: var(--spacing-md);
+  }
+  .card h2 {
+    font-size: 1.3rem;
+  }
+  .current-status p, .control-panel button {
+    font-size: 1rem;
+  }
+  .current-status p strong {
+    font-size: 1.1rem;
+  }
+  .history-chart {
+    min-height: 300px; /* Adjust height for smaller screens */
+  }
+}
