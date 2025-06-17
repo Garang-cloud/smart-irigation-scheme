@@ -1,35 +1,41 @@
 /* --- Global Styles & Variables --- */
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap');
+
 :root {
-  /* Professional Blue Palette */
-  --blue-dark: #2C3E50; /* Header, strong elements */
-  --blue-medium: #34495E; /* Card headers, darker backgrounds */
-  --blue-light: #ECF0F1; /* Light background */
-  --blue-accent: #3498DB; /* Primary interactive elements, highlights */
+  /* New Professional Palette based on "Controller Panel" */
+  --primary-blue-dark: #203A4D; /* For strong elements, maybe top bar */
+  --primary-blue: #3E60F7;    /* Main accent blue, similar to the controller cards' headers */
+  --light-gray-bg: #F0F3F7;   /* Overall soft background color */
+  --card-bg: #FFFFFF;         /* White for cards */
+  --text-dark: #333333;       /* General dark text */
+  --text-medium: #6B7B8F;     /* Secondary text, labels */
+  --text-light: #AAB7C6;      /* Fainter text */
 
-  /* Irrigation Green */
-  --green-irrigation: #2ECC71; /* Success states, ON buttons */
-  --green-irrigation-dark: #27AE60; /* Darker green for hover */
+  /* Specific accents from the image */
+  --accent-green: #2ECC71;    /* For ON/Success buttons */
+  --accent-yellow: #FFD700;   /* For "Comfort Mode" / Warning */
 
-  /* General Colors */
-  --text-dark: #333333;
-  --text-light: #7F8C8D;
-  --white: #FFFFFF;
-  --border-light: #D5DBDB;
-  --shadow-subtle: rgba(0, 0, 0, 0.1);
-  --shadow-medium: rgba(0, 0, 0, 0.15);
-
-  --border-radius: 10px;
+  --border-radius-lg: 15px;   /* Larger rounded corners for cards */
+  --border-radius-md: 10px;   /* Medium rounded corners for buttons */
+  --spacing-xs: 5px;
   --spacing-sm: 10px;
   --spacing-md: 20px;
   --spacing-lg: 30px;
+  --shadow-subtle: rgba(0, 0, 0, 0.05); /* Lighter shadow */
+  --shadow-medium: rgba(0, 0, 0, 0.1);  /* Slightly more visible shadow */
+}
+
+/* Basic Resets & Font Application */
+* {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  font-family: 'Inter', 'Roboto', 'Open Sans', 'Lato', Arial, sans-serif;
+  font-family: 'Jost', sans-serif; /* Apply Jost font */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--blue-light);
+  background-color: var(--light-gray-bg); /* Overall light background */
   color: var(--text-dark);
   line-height: 1.6;
   overflow-x: hidden; /* Prevent horizontal scroll */
@@ -45,192 +51,364 @@ body {
 
 /* --- Header Styling --- */
 .App-header {
-  background-color: var(--blue-dark);
-  color: var(--white);
+  background-color: var(--card-bg); /* White header to match panel design */
+  color: var(--text-dark); /* Darker text for header title */
   padding: var(--spacing-md) var(--spacing-lg);
   width: 100%;
-  box-shadow: 0 4px 15px var(--shadow-medium);
-  text-align: center;
-  font-size: 2rem; /* Larger header title */
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  border-bottom-left-radius: var(--border-radius);
-  border-bottom-right-radius: var(--border-radius);
+  box-shadow: 0 2px 10px var(--shadow-subtle); /* Lighter header shadow */
+  text-align: left; /* Align title left */
+  font-size: 1.8rem; /* Slightly smaller header title */
+  font-weight: 600; /* Medium bold */
+  letter-spacing: 0.02em;
+  display: flex; /* Use flex to align title and nav */
+  justify-content: space-between; /* Space between title and nav */
+  align-items: center; /* Vertically align */
 }
+
+.App-header h1 {
+    margin: 0; /* Remove default h1 margin */
+    color: var(--primary-blue); /* Title color */
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+
+/* --- Navigation bar styling --- */
+.main-nav {
+    margin-top: 0; /* Adjust margin for flex header */
+    display: flex; /* Make nav items horizontal */
+    gap: var(--spacing-md); /* Space between nav items */
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+    justify-content: center;
+}
+
+.main-nav a,
+.main-nav .nav-button { /* Apply similar styles to links and buttons in nav */
+    color: var(--text-medium); /* Nav link color */
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: var(--border-radius-md);
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.1s ease;
+    border: 1px solid transparent; /* For consistent button/link sizing */
+    background-color: transparent; /* Default for links/buttons in nav */
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 1rem;
+    text-align: center; /* Ensure text is centered in buttons */
+}
+
+.main-nav a:hover,
+.main-nav .nav-button:hover {
+    background-color: var(--secondary-blue); /* Light blue hover */
+    color: var(--primary-blue); /* Primary blue on hover */
+    transform: translateY(-1px); /* Slight lift on hover */
+}
+
+.main-nav a.active { /* Style for active link (optional, requires more router setup) */
+    background-color: var(--secondary-blue); /* Background for active link */
+    color: var(--primary-blue); /* Text color for active link */
+    font-weight: 700;
+}
+
+.main-nav .logout-button {
+  background-color: #E74C3C; /* Red for logout */
+  color: var(--white); /* White text for logout button */
+  border-color: #E74C3C;
+}
+
+.main-nav .logout-button:hover {
+  background-color: color-mix(in srgb, #E74C3C 80%, black 20%);
+}
+
 
 /* --- Main Content Layout (CSS Grid for two rows) --- */
 main {
   display: grid;
-  /* Define two rows: top for status/control, bottom for chart */
-  grid-template-rows: auto 1fr; /* Top row fits content, bottom row takes remaining space */
-  gap: var(--spacing-md); /* Gap between the two main rows */
+  grid-template-rows: auto 1fr;
+  gap: var(--spacing-md);
   padding: var(--spacing-lg);
   width: 100%;
-  max-width: 1300px; /* Max width for content */
-  flex-grow: 1; /* Allows main content to expand */
-  margin-top: var(--spacing-md); /* Margin below the header */
+  max-width: 1400px;
+  flex-grow: 1;
+  margin-top: var(--spacing-md);
 }
 
-/* Container for the top row (Status + Pump Control) */
+/* Container for the top row (Sensor Status + Pump Control + Weather) */
 .top-row-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive columns for cards */
-  gap: var(--spacing-md); /* Gap between status and pump control cards */
-  margin-bottom: var(--spacing-sm); /* Small margin before the chart */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
 }
 
-/* --- Card Styling --- */
+/* --- Card Styling (Common) - Refer to CardStyles.css for most of this now --- */
+/* (Keeping this here as a reference, actual styles are in CardStyles.css) */
 .card {
-  background-color: var(--white);
-  border-radius: var(--border-radius);
-  box-shadow: 0 4px 10px var(--shadow-subtle);
-  padding: var(--spacing-md);
-  border: 1px solid var(--border-light);
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Smooth hover effect */
+  /* These are now primarily defined in CardStyles.css */
+  background-color: var(--card-bg);
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 5px 20px var(--shadow-subtle);
+  padding: var(--spacing-lg);
+  border: none;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
 .card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px var(--shadow-medium);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px var(--shadow-medium);
 }
 
 .card h2 {
-  color: var(--blue-medium);
+  color: var(--primary-blue);
   font-size: 1.5rem;
   margin-top: 0;
   margin-bottom: var(--spacing-md);
-  border-bottom: 2px solid var(--border-light);
+  border-bottom: 2px solid var(--secondary-blue);
   padding-bottom: var(--spacing-sm);
   font-weight: 600;
-  /* Removed icon alignment flex properties as icons are not used */
+  text-align: left;
 }
 
-/* --- Current Status Specifics --- */
-.current-status p {
+
+/* --- Specific Card Layouts (from previous App.css, now used by individual components) --- */
+/* These specific selectors are used by the new components, so keep them for styling consistency */
+
+.sensor-status p { /* Was .current-status p */
   margin-bottom: var(--spacing-sm);
-  font-size: 1.15rem;
+  font-size: 1.1rem;
+  color: var(--text-medium);
+  text-align: left;
+}
+.sensor-status p strong { /* Was .current-status p strong */
   color: var(--text-dark);
-  /* Removed icon alignment flex properties as icons are not used */
+  font-weight: 600;
+  font-size: 1.25rem;
 }
 
-.current-status p strong {
-  color: var(--blue-accent); /* Highlight key values with accent blue */
-  font-weight: 700;
-  font-size: 1.3rem;
+
+.pump-control .automation-status, /* Was .control-panel .automation-status */
+.pump-control .cooldown-message { /* Was .control-panel .cooldown-message */
+    width: 100%;
+    text-align: center;
+    margin-bottom: var(--spacing-md);
+    font-size: 1.1rem;
+    color: var(--text-dark);
 }
 
-/* --- Pump Control Specifics --- */
-.control-panel {
-  display: flex;
-  flex-direction: column; /* Stack buttons vertically by default */
-  gap: var(--spacing-sm);
-  justify-content: center; /* Center buttons vertically within the card */
-  align-items: center; /* Center buttons horizontally */
+.pump-control .pump-buttons { /* Was .control-panel */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    align-items: center;
 }
 
-.control-panel button {
-  width: 100%; /* Full width for buttons on small screens */
-  max-width: 250px; /* Max width for buttons */
-  color: var(--white);
+.pump-control button { /* Was .control-panel button */
+  width: 100%;
+  max-width: 280px;
+  color: var(--card-bg);
   border: none;
-  padding: 15px 25px; /* More padding for a better click target */
-  border-radius: var(--border-radius);
+  padding: 18px 30px;
+  border-radius: var(--border-radius-md);
   cursor: pointer;
   font-size: 1.1rem;
   font-weight: 600;
   transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
-  box-shadow: 0 2px 5px var(--shadow-subtle);
+  box-shadow: 0 3px 10px var(--shadow-subtle);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-.control-panel button:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 10px var(--shadow-subtle);
+.pump-control button:hover:not(:disabled) { /* Was .control-panel button:hover */
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px var(--shadow-medium);
 }
 
-.control-panel button:active:not(:disabled) { /* Added active state */
+.pump-control button:active:not(:disabled) { /* Was .control-panel button:active */
   transform: translateY(1px);
-  box-shadow: 0 1px 3px var(--shadow-subtle);
+  box-shadow: 0 1px 5px var(--shadow-subtle);
 }
 
-.control-panel button:disabled {
-  background-color: #cccccc;
+.pump-control button:disabled { /* Was .control-panel button:disabled */
+  background-color: var(--secondary-blue);
+  color: var(--text-light);
   cursor: not-allowed;
   box-shadow: none;
-  opacity: 0.7;
+  opacity: 0.9;
 }
 
-/* Specific styling for Pump ON/OFF states */
-.control-panel button:nth-child(1) { /* Turn Pump ON */
-  background-color: var(--green-irrigation);
+.pump-control button:nth-child(1) { /* Turn Pump ON, was .control-panel button:nth-child(1) */
+  background-color: var(--accent-green);
 }
-.control-panel button:nth-child(1):hover:not(:disabled) {
-  background-color: var(--green-irrigation-dark);
+.pump-control button:nth-child(1):hover:not(:disabled) {
+  background-color: color-mix(in srgb, var(--accent-green) 90%, black 10%);
 }
-.control-panel button:nth-child(1):disabled {
-  background-color: #A5D6A7; /* Lighter green when disabled */
-}
-
-.control-panel button:nth-child(2) { /* Turn Pump OFF */
-  background-color: var(--blue-accent);
-}
-.control-panel button:nth-child(2):hover:not(:disabled) {
-  background-color: color-mix(in srgb, var(--blue-accent) 80%, black 20%);
-}
-.control-panel button:nth-child(2):disabled {
-  background-color: #B0BEC5; /* Lighter blue when disabled */
+.pump-control button:nth-child(1):disabled {
+  background-color: color-mix(in srgb, var(--accent-green) 50%, white 50%);
 }
 
+.pump-control button:nth-child(2) { /* Turn Pump OFF, was .control-panel button:nth-child(2) */
+  background-color: var(--primary-blue);
+}
+.pump-control button:nth-child(2):hover:not(:disabled) {
+  background-color: color-mix(in srgb, var(--primary-blue) 90%, black 10%);
+}
+.pump-control button:nth-child(2):disabled {
+  background-color: color-mix(in srgb, var(--primary-blue) 50%, white 50%);
+}
 
-/* --- History Chart Specifics --- */
-.history-chart {
-  /* This card will span the full width of the second row in the main grid */
-  min-height: 400px; /* Ensure chart has enough height */
+
+.weather-info .weather-details { /* Was .weather-info */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-xs);
+    margin-top: var(--spacing-sm);
+    width: 100%;
+}
+
+.weather-info .weather-details p {
+    margin: 0;
+    font-size: 1.05rem;
+    color: var(--text-medium);
+    text-align: left;
+    width: 100%;
+}
+
+.weather-info .weather-details strong {
+    color: var(--text-dark);
+    font-weight: 600;
+}
+
+.weather-info .weather-icon {
+    width: 70px;
+    height: 70px;
+    margin-bottom: var(--spacing-xs);
+}
+
+.weather-info .last-updated-weather {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-top: var(--spacing-sm);
+    text-align: left;
+}
+
+
+/* --- History Charts Container & Individual Chart Card Styling --- */
+
+.history-charts-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    width: 100%;
+}
+
+.chart-card { /* Was .history-chart */
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.chart-card h2 {
+    margin-bottom: var(--spacing-sm);
+    text-align: left;
+}
+
+.chart-card .chart-container {
+    flex-grow: 1;
+    width: 100%;
+    position: relative;
+    min-height: 280px;
+}
+
+/* --- NEW: Loading States for Authentication --- */
+.app-global-loading, .loading-state {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: var(--spacing-md); /* Consistent padding */
+  min-height: 100vh;
+  font-size: 1.8rem; /* Slightly larger loading text */
+  color: var(--primary-blue-dark); /* Match header text color */
+  background-color: var(--light-gray-bg);
+  font-weight: 600;
 }
 
-.history-chart > div { /* Target the chart container inside history-chart */
-  width: 100%;
-  height: 100%; /* Take available height within min-height */
-  margin-top: var(--spacing-md); /* Margin between title and chart */
+.error-state { /* New style for error messages in Dashboard */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  font-size: 1.2rem;
+  color: #E74C3C; /* Red for errors */
+  background-color: var(--card-bg);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: 0 4px 10px var(--shadow-subtle);
+  margin: var(--spacing-md);
 }
 
-/* --- Custom Alert Modal --- */
-/* Removed modal styles as CustomAlertModal component is removed */
 
-
-/* --- Responsive Adjustments (Media Queries) --- */
-
-/* For tablets and larger screens, arrange buttons side-by-side */
+/* Responsive adjustments for overall layout - MODIFIED FOR CHARTS */
 @media (min-width: 576px) {
-  .control-panel {
+  .pump-control .pump-buttons { /* Was .control-panel .pump-buttons */
     flex-direction: row;
     justify-content: space-around;
   }
-  .control-panel button {
-    width: auto; /* Buttons can size to content */
-    min-width: 180px; /* Ensure a minimum width */
+  .pump-control button { /* Was .control-panel button */
+    width: auto;
+    min-width: 180px;
   }
 }
 
-/* For larger desktops, adjust main padding and card widths */
+@media (min-width: 768px) {
+    .top-row-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .history-charts-container {
+        grid-template-columns: none; /* No grid columns */
+        flex-direction: column; /* Explicitly ensure column layout */
+    }
+}
+
 @media (min-width: 1024px) {
   main {
-    padding: var(--spacing-lg) 5%; /* More horizontal padding */
+    padding: var(--spacing-lg) 5%;
   }
   .top-row-container {
-    grid-template-columns: repeat(2, 1fr); /* Exactly two columns for status and control */
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .history-charts-container {
+      grid-template-columns: none; /* No grid columns */
+      flex-direction: column; /* Explicitly ensure column layout */
   }
 }
 
-/* General mobile adjustments */
 @media (max-width: 767px) {
   .App-header {
-    font-size: 1.5rem;
-    padding: var(--spacing-md);
+    font-size: 1.2rem;
+    padding: var(--spacing-sm);
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .App-header h1 {
+      font-size: 1.5rem;
+      margin-bottom: var(--spacing-sm);
+  }
+  .main-nav {
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      margin-top: var(--spacing-sm);
+      gap: var(--spacing-sm);
+  }
+  .main-nav a, .main-nav .nav-button {
+      padding: 6px 10px;
+      font-size: 0.9rem;
+      margin: 0;
+      flex-grow: 1;
   }
   main {
     padding: var(--spacing-md);
@@ -242,13 +420,17 @@ main {
   .card h2 {
     font-size: 1.3rem;
   }
-  .current-status p, .control-panel button {
+  .sensor-status p, .pump-control button, .weather-info .weather-details p, .chart-card .chart-container p {
     font-size: 1rem;
   }
-  .current-status p strong {
+  .sensor-status p strong, .weather-info .weather-details strong {
     font-size: 1.1rem;
   }
-  .history-chart {
-    min-height: 300px; /* Adjust height for smaller screens */
+  .history-charts-container {
+    min-height: auto;
+    grid-template-columns: 1fr;
   }
-}
+  .chart-card .chart-container {
+      min-height: 200px;
+  }
+} /* <-- This closes the @media (max-width: 767px) block */
