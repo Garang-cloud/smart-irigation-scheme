@@ -57,6 +57,9 @@ const ProtectedRoute = ({ children }) => {
 // --- Dashboard Component ---
 // All state management for dashboard data remains here
 const Dashboard = () => {
+  const { loading:authLoading } = useAuth(); 
+  const [loadingDashboard, setLoadingDashboard] = useState(true); // Use auth loading state
+  
   const [latestData, setLatestData] = useState({
     soilMoisture: 'N/A',
     pumpStatus: 'OFF',
@@ -77,7 +80,7 @@ const Dashboard = () => {
     wind_speed: 'N/A',
     timestamp: null
   });
-  const [loadingDashboard, setLoadingDashboard] = useState(true); // Renamed to avoid confusion with auth loading
+  // const [loadingDashboard, setLoadingDashboard] = useState(true); // Renamed to avoid confusion with auth loading
   const [error, setError] = useState(null);
   const [cooldownRemaining, setCooldownRemaining] = useState(0);
 
