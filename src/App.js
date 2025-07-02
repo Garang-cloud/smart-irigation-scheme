@@ -36,7 +36,7 @@ ChartJS.register(
   Legend
 );
 
-const BACKEND_URL = 'http://localhost:5000';
+const BACKEND_URL = 'https://smartbackend-ryil.onrender.com';
 
 // --- ProtectedRoute Component ---
 // This component guards routes, redirecting to login if not authenticated
@@ -322,3 +322,4 @@ const AppWrapper = () => (
 );
 
 export default AppWrapper;
+
