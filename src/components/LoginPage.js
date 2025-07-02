@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../firebase';
-import { useNavigate } from 'react-router-dom'; // Assuming you're using react-router for navigation
+import { useNavigate } from 'react-router-dom';
 import './LoginPage.css';
 
 const LoginPage = ({ onLoginSuccess }) => {
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -17,29 +17,16 @@ const LoginPage = ({ onLoginSuccess }) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       setMessage('Login successful!');
-      navigate('/'); // Assuming you have a navigate function to redirect
+      navigate('/');
     } catch (error) {
       setMessage('Login failed: ' + error.message);
-    }
-  };
-
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    setMessage('');
-    try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      setMessage('Registration successful! You can now log in.');
-      setEmail('');
-      setPassword('');
-    } catch (error) {
-      setMessage('Registration failed: ' + error.message);
     }
   };
 
   return (
     <div className="login-container">
       <div className="login-card">
-        <h2>Login / Register</h2>
+        <h2>Login</h2>
         <form onSubmit={handleLogin}>
           <div className="form-group">
             <label htmlFor="email">Email:</label>
@@ -63,8 +50,8 @@ const LoginPage = ({ onLoginSuccess }) => {
           </div>
           {message && <p className="auth-message">{message}</p>}
           <div className="button-group">
-            <button type="submit" onClick={handleLogin} className="login-button">Login</button>
-            <button type="button" onClick={handleRegister} className="register-button">Register</button>
+            <button type="submit" className="login-button">Login</button>
+            <button type="button" className="register-button" disabled>Register</button>
           </div>
         </form>
       </div>
